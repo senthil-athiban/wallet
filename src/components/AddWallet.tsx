@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { Keypair } from "@solana/web3.js";
@@ -25,9 +25,11 @@ const AddWallet = ({ mnemonics }: AddWalletProps) => {
 
     const seed = mnemonicToSeed(mnemonics);
     const derivationPath = `m/44'/${currentWallet === "Solana" ? "501" : "60"}'/${currentIndex}'/0'`;
+    // @ts-ignore
     const derivedSeed = derivePath(derivationPath!, seed.toString("hex")).key;
     
     if (currentWallet === "Solana") {  
+      // @ts-ignore
       const secret = nacl.sign.keyPair(derivedSeed).secretKey;
       const keyPair = Keypair.fromSecretKey(secret);
       publicKey = keyPair.publicKey.toBase58();
